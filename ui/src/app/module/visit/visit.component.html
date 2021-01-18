@@ -1,0 +1,94 @@
+<div class="container">
+
+  <div class="row">
+    <div class="col-12">
+      <h3>Visits</h3>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+
+      <div class="row">
+        <div class="col-12">
+          <button class="btn btn-primary float-right" type="button"
+                  (click)="add(content)">
+            + Add
+          </button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <table class="table table-striped">
+            <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Visit Datetime</th>
+              <th scope="col">Physician</th>
+              <th scope="col">Reason</th>
+              <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let visit of visits; index as i">
+              <td>{{visit.id}}</td>
+              <td>{{visit.visitDatetime | date:'yyyy/MM/dd HH:mm'}}
+              </td>
+              <td>{{ visit.physician.name }}</td>
+              <td>{{ visit.reason }}</td>
+              <td>
+                <fa-icon class="mr-2" [icon]="faEdit" (click)="edit(content, visit)"></fa-icon>
+                <fa-icon [icon]="faTrash" (click)="delete(visit)"></fa-icon>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Manage Visit</h4>
+
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="form-group">
+        <label>ID</label>
+        <div class="input-group">
+          <input type="text" class="form-control" name="id" [(ngModel)]="selectedVisit.id"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Date Time</label>
+        <div class="input-group">
+          <app-date-time-picker [(ngModel)]="selectedVisit.visitDatetime" name="activeEndDate"></app-date-time-picker>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Physician</label>
+        <select [compareWith]="physicianCompare" class="form-control" name="physician"
+                [(ngModel)]="selectedVisit.physician">
+          <option *ngFor="let physician of physicians" [ngValue]="physician">{{physician.name}}</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Reason</label>
+        <textarea class="form-control" name="reason" rows="3" [(ngModel)]="selectedVisit.reason"></textarea>
+      </div>
+
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
+    <button type="button" class="btn btn-primary" (click)="modal.close()">Save</button>
+  </div>
+</ng-template>
